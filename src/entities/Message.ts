@@ -10,7 +10,7 @@ import {
   
   import { User } from './User';
   
-  @Entity('messages')
+  @Entity('message')
   class Message {
     @PrimaryColumn()
     id: string;

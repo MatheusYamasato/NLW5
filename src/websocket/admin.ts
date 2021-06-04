@@ -9,7 +9,7 @@ io.on("connect", async (socket) => {
 
     io.emit("admin_list_all_users", allConnectionsWithoutAdmin);
 
-    socket.on('admin_list_all_user', async (params, cb)  => {
+    socket.on('admin_list_messages_by_user', async (params, cb)  => {
         const { user_id } = params;
 
         const allMessages = await messagesService.listByUser(user_id);
@@ -28,7 +28,18 @@ io.on("connect", async (socket) => {
 
         const { socket_id } = await connectionsService.findByUserId(user_id)
 
-        io.to(socket_id)
+        io.to(socket_id).emit('admin_send_to_clit', {
+            text,
+            socket_id: socket.id
+        })
+    })
+
+    socket.on('admin_user_in_support', async params => {
+        const { user_id } = params;
+        await connectionsService.updateAdminID(user_id, socket.id)
+
+        const allConnectionsWithoutAdmin = await connectionsService.findAllWithoutAdmin()
+        io.emit("admin_list_all_users", allConnectionsWithoutAdmin)
     })
 
 })

@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from "typeorm";
+import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, Repository } from "typeorm";
 import { User } from './User'
 import { v4 as uuid } from 'uuid'
 import { JoinColumn } from 'typeorm';
@@ -28,10 +28,8 @@ class Connection {
     updated_at: Date;
 
     constructor() {
-        if(!this.id) {
-            this.id = uuid();
-        }
-    }
+        if (!this.id) this.id = uuid();
+      }
 }
 
 export { Connection }
